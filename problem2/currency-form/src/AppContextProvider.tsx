@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { themes } from "./mockData";
-// Define a type for the context value
 
 export interface CurrencyPrice {
   currency: string;
   date: string;
-  icon?: string;
   price: number;
 }
+
+export type CurrencyPriceWithoutDate = Omit<CurrencyPrice, "date">;
 
 interface FormContextType {
   data: CurrencyPrice[];
@@ -16,10 +16,10 @@ interface FormContextType {
   setError: (error: boolean) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  fromCurrency: string | null;
-  setFromCurrency: (currency: string) => void;
-  toCurrency: string | null;
-  setToCurrency: (currency: string) => void;
+  fromCurrency: CurrencyPriceWithoutDate | null;
+  setFromCurrency: (currency: { currency: string; price: number }) => void;
+  toCurrency: CurrencyPriceWithoutDate | null;
+  setToCurrency: (currency: { currency: string; price: number }) => void;
   theme: string;
   setTheme: (theme: string) => void;
 }
@@ -31,7 +31,6 @@ export const defaultValue: FormContextType = {
     {
       currency: "",
       date: "",
-      icon: "",
       price: 0,
     },
   ],

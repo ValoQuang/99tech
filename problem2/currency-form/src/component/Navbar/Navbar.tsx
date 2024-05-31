@@ -50,28 +50,36 @@ const Navbar = React.memo(() => {
     }
   };
 
-  const renderSocialMediaButtons = socialMediaLink.map(({ name, icon }) => (
-    <SwitchButton key={name} onSwap={() => handleNavigate(name)} icon={icon} />
-  ));
+  const renderSocialMediaButtons = () => {
+    return (
+      <>
+        {socialMediaLink.map(({ name, icon }) => (
+          <>
+            <SwitchButton
+              key={name}
+              onSwap={() => handleNavigate(name)}
+              icon={icon}
+            />
+          </>
+        ))}
+        <SwitchButton onSwap={handleChangeTheme} icon={<LuPaintBucket />} />
+      </>
+    );
+  };
 
   return (
     <div data-theme={theme}>
       <nav className="w-full h-10 flex gap-1 px-6 justify-between">
         <h1 className="text-4xl">Expensive form</h1>
         <section className="flex gap-1 max-lg:hidden">
-          {renderSocialMediaButtons}
-          <SwitchButton onSwap={handleChangeTheme} icon={<LuPaintBucket />} />
+          {renderSocialMediaButtons()}
         </section>
 
         <div className="lg:hidden relative">
           <SwitchButton onSwap={handleDropdown} icon={<LuAlignJustify />} />
           {openDropdown && (
-            <div className="absolute right-0 mt-2 flex gap-[2px] flex-col shadow-lg z-50">
-              {renderSocialMediaButtons}
-              <SwitchButton
-                onSwap={handleChangeTheme}
-                icon={<LuPaintBucket />}
-              />
+            <div className="absolute animate-fadeIn right-0 mt-2 flex gap-[2px] flex-col shadow-lg z-50">
+              {renderSocialMediaButtons()}
             </div>
           )}
         </div>

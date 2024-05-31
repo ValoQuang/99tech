@@ -4,7 +4,7 @@ import { CurrencyPrice } from "../../AppContextProvider";
 interface DropdownButton {
   label: string;
   selectedCurrency: string;
-  onSelectCurrency: (currency: string) => void;
+  onSelectCurrency: (currency: {currency: string, price: number}) => void;
   data: CurrencyPrice[];
 }
 
@@ -30,7 +30,7 @@ const DropdownButton = React.memo(
                 <li
                   className="hover:bg-base-200 cursor-pointer"
                   key={index}
-                  onClick={() => onSelectCurrency(item.currency)}
+                  onClick={() => onSelectCurrency({currency: item.currency, price: item.price})}
                 >
                   {item.currency}
                 </li>

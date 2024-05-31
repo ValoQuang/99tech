@@ -1,4 +1,7 @@
-import { useFormContext } from "../../AppContextProvider";
+import {
+  CurrencyPriceWithoutDate,
+  useFormContext,
+} from "../../AppContextProvider";
 import Dropdown from "../Buttons/Dropdown";
 import SwitchButton from "../Buttons/Switch";
 import Input from "../Buttons/Input";
@@ -14,18 +17,21 @@ const Form = () => {
     setToCurrency,
   } = useFormContext();
 
-  const handleFromCurrency = (currency: string) => {
+  const handleFromCurrency = (currency: {
+    currency: string;
+    price: number;
+  }) => {
     setFromCurrency(currency);
   };
 
-  const handleToCurrency = (currency: string) => {
+  const handleToCurrency = (currency: { currency: string; price: number }) => {
     setToCurrency(currency);
   };
 
   const handleSwapCurrency = () => {
     if (toCurrency === fromCurrency) return;
-    setFromCurrency(toCurrency as string);
-    setToCurrency(fromCurrency as string);
+    setFromCurrency(toCurrency as CurrencyPriceWithoutDate);
+    setToCurrency(fromCurrency as CurrencyPriceWithoutDate);
   };
 
   const renderCalculator = () => {
@@ -36,7 +42,7 @@ const Form = () => {
             <span className="loading loading-ring loading-lg"></span>
           </div>
         ) : (
-          <div className="flex flex-col gap-5 rounded-xl ">
+          <div className="flex animate-fadeIn flex-col gap-5 rounded-xl">
             <h1 className="items-center max-lg:text-xl text-2xl align-middle flex justify-center pt-10">
               Currency exchange calculator
             </h1>
@@ -48,7 +54,7 @@ const Form = () => {
               <div className="gap-3 flex max-lg:w-full max-lg:px-0 w-2/3 justify-between">
                 <Dropdown
                   label="From"
-                  selectedCurrency={fromCurrency as string}
+                  selectedCurrency={fromCurrency?.currency as string}
                   data={data}
                   onSelectCurrency={handleFromCurrency}
                 />
@@ -61,7 +67,7 @@ const Form = () => {
 
                 <Dropdown
                   label="To"
-                  selectedCurrency={toCurrency as string}
+                  selectedCurrency={toCurrency?.currency as string}
                   data={data}
                   onSelectCurrency={handleToCurrency}
                 />
@@ -76,7 +82,8 @@ const Form = () => {
                 </div>
                 <div className="collapse-content">
                   <p>
-                    1 {fromCurrency} is equal to {toCurrency}
+                    1 {fromCurrency?.currency} is equal to{" "}
+                    {toCurrency?.currency}
                   </p>
                 </div>
               </div>

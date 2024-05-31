@@ -47,14 +47,14 @@ function App() {
 
   return (
     <div
-      className="h-screen w-full max-lg:px-0 max-lg:overflow-x-hidden px-48"
+      className="h-screen w-full max-lg:px-0 max-lg:overflow-x-hidden px-48 flex flex-col justify-between"
       data-theme={theme}
     >
       <div className="items-center align-middle max-lg:pt-1 pt-2">
         <Navbar />
         <Form />
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 }
