@@ -37,6 +37,9 @@ const Form = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-5 rounded-xl ">
+            <h1 className="items-center max-lg:text-xl text-2xl align-middle flex justify-center pt-10">
+              Currency exchange calculator
+            </h1>
             <section className="flex w-full gap-5 max-lg:flex-col">
               <div className="w-1/3 max-lg:w-full">
                 <Input />

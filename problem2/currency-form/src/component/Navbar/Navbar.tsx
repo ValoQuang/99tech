@@ -9,6 +9,7 @@ import {
 import SwitchButton from "../Buttons/Switch";
 import { useFormContext } from "../../AppContextProvider";
 import { themes } from "../../mockData";
+import React from "react";
 
 const socialMediaLink = [
   {
@@ -28,7 +29,7 @@ const socialMediaLink = [
   },
 ];
 
-const Navbar = () => {
+const Navbar = React.memo(() => {
   const { theme, setTheme } = useFormContext();
   const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -56,8 +57,7 @@ const Navbar = () => {
   return (
     <div data-theme={theme}>
       <nav className="w-full h-10 flex gap-1 px-6 justify-between">
-        <h1 className="text-4xl">Quang form</h1>
-
+        <h1 className="text-4xl">Expensive form</h1>
         <section className="flex gap-1 max-lg:hidden">
           {renderSocialMediaButtons}
           <SwitchButton onSwap={handleChangeTheme} icon={<LuPaintBucket />} />
@@ -78,6 +78,6 @@ const Navbar = () => {
       </nav>
     </div>
   );
-};
+});
 
 export default Navbar;

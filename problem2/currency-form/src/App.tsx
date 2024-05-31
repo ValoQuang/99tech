@@ -4,9 +4,10 @@ import { useFormContext } from "./AppContextProvider";
 import { data } from "./mockData";
 import { validateCurrencyData } from "./utils/validateData";
 import Navbar from "./component/Navbar/Navbar";
+import Footer from "./component/Footer/Footer";
 
 function App() {
-  const { theme, setData, setError, error, setLoading } = useFormContext();
+  const { theme, setData, setError, setLoading } = useFormContext();
   useEffect(() => {
     //const fetchData = async () => {
     //  try {
@@ -32,7 +33,7 @@ function App() {
           const validatedData = validateCurrencyData(data);
           setData(validatedData);
           setLoading(false);
-        }, 500);
+        }, 1000);
         return () => {
           clearTimeout(responseTimeout);
         };
@@ -49,18 +50,11 @@ function App() {
       className="h-screen w-full max-lg:px-0 max-lg:overflow-x-hidden px-48"
       data-theme={theme}
     >
-      {error ? (
-        "Error message here"
-      ) : (
-        <div className="items-center align-middle max-lg:pt-1 pt-2">
-          <Navbar />
-
-          <h1 className="items-center max-lg:text-xl text-2xl align-middle flex justify-center pt-10">
-            Currency exchange calculator
-          </h1>
-          <Form />
-        </div>
-      )}
+      <div className="items-center align-middle max-lg:pt-1 pt-2">
+        <Navbar />
+        <Form />
+        <Footer />
+      </div>
     </div>
   );
 }
