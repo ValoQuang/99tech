@@ -3,10 +3,10 @@ import Form from "./component/Form/Form";
 import { useFormContext } from "./AppContextProvider";
 import { data } from "./mockData";
 import { validateCurrencyData } from "./utils/validateData";
+import Navbar from "./component/Navbar/Navbar";
 
 function App() {
-  const { setData, setError, error, loading, setLoading } = useFormContext();
-
+  const { theme, setData, setError, error, setLoading } = useFormContext();
   useEffect(() => {
     //const fetchData = async () => {
     //  try {
@@ -14,24 +14,24 @@ function App() {
     //      "https://interview.switcheo.com/prices.json"
     //    );
     //    if (!response.ok) {
-    //      throw new Error("Network response was not ok");
+    //      setError(...)
     //    }
     //    const data = await response.json();
     //    setData(data);
-    //  } catch (error: any) {
-    //    setError(error.message as any);
+    //    setLoading(false);
+    //  } catch (error) {
+    //    setError(error.message);
     //  }
     //};
 
-    //mock the api backend call
+    //mock the api backend call with fetching tim around 1s to display loading spinner
     const fetchData = async () => {
       try {
         setLoading(true);
         const responseTimeout = setTimeout(() => {
-          // Mock data for demonstration
           const validatedData = validateCurrencyData(data);
           setData(validatedData);
-          setLoading(false); // Turn off loading state
+          setLoading(false);
         }, 500);
         return () => {
           clearTimeout(responseTimeout);
@@ -42,23 +42,26 @@ function App() {
       }
     };
     fetchData();
-  }, []);
-  
+  }, [setData, setError, setLoading]);
+
   return (
-    <>
-      <div className="h-screen w-full max-lg:px-0 max-lg:overflow-x-hidden px-36" data-theme="retro">
-        {error ? (
-          "Error message here"
-        ) : (
-          <div className="items-center align-middle pt-10 max-lg:pt-0">
-            <h1 className="items-center max-lg:text-xl text-3xl align-middle flex justify-center">
-              Currency conversion calculator
-            </h1>
-            <Form />
-          </div>
-        )}
-      </div>
-    </>
+    <div
+      className="h-screen w-full max-lg:px-0 max-lg:overflow-x-hidden px-48"
+      data-theme={theme}
+    >
+      {error ? (
+        "Error message here"
+      ) : (
+        <div className="items-center align-middle max-lg:pt-1 pt-2">
+          <Navbar />
+
+          <h1 className="items-center max-lg:text-xl text-2xl align-middle flex justify-center pt-10">
+            Currency exchange calculator
+          </h1>
+          <Form />
+        </div>
+      )}
+    </div>
   );
 }
 

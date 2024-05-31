@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { themes } from "./mockData";
 // Define a type for the context value
 
 export interface CurrencyPrice {
@@ -19,6 +20,8 @@ interface FormContextType {
   setFromCurrency: (currency: string) => void;
   toCurrency: string | null;
   setToCurrency: (currency: string) => void;
+  theme: string;
+  setTheme: (theme: string) => void;
 }
 
 export const defaultValue: FormContextType = {
@@ -39,6 +42,8 @@ export const defaultValue: FormContextType = {
   setData: () => {},
   setError: () => {},
   setLoading: () => {},
+  theme: themes[0],
+  setTheme: () => {},
 };
 
 const TokenFormProvider = createContext<FormContextType>(defaultValue);
@@ -51,10 +56,13 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(defaultValue.loading);
   const [fromCurrency, setFromCurrency] = useState(defaultValue.fromCurrency);
   const [toCurrency, setToCurrency] = useState(defaultValue.toCurrency);
+  const [theme, setTheme] = useState(themes[0]);
 
   return (
     <TokenFormProvider.Provider
       value={{
+        theme,
+        setTheme,
         fromCurrency,
         setFromCurrency,
         toCurrency,

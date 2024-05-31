@@ -1,7 +1,8 @@
 import { useFormContext } from "../../AppContextProvider";
 import Dropdown from "../Buttons/Dropdown";
-import SwapButton from "../Buttons/Swap";
+import SwitchButton from "../Buttons/Switch";
 import Input from "../Buttons/Input";
+import { LuArrowLeftRight } from "react-icons/lu";
 
 const Form = () => {
   const {
@@ -31,9 +32,11 @@ const Form = () => {
     return (
       <>
         {loading ? (
-          <div className="w-full">Loading ...</div>
+          <div className="w-full flex items-center justify-center">
+            <span className="loading loading-ring loading-lg"></span>
+          </div>
         ) : (
-          <div className="flex flex-col gap-5 rounded-xl">
+          <div className="flex flex-col gap-5 rounded-xl ">
             <section className="flex w-full gap-5 max-lg:flex-col">
               <div className="w-1/3 max-lg:w-full">
                 <Input />
@@ -47,7 +50,11 @@ const Form = () => {
                   onSelectCurrency={handleFromCurrency}
                 />
 
-                <SwapButton onSwap={handleSwapCurrency} />
+                <SwitchButton
+                  onSwap={handleSwapCurrency}
+                  header="Swap"
+                  icon={<LuArrowLeftRight />}
+                />
 
                 <Dropdown
                   label="To"
@@ -62,7 +69,7 @@ const Form = () => {
               <div className="collapse bg-base-200">
                 <input type="radio" name="my-accordion-1" defaultChecked />
                 <div className="collapse-title text-xl font-medium">
-                  Exchange rate at {Date().toString()}
+                  Exchange rate
                 </div>
                 <div className="collapse-content">
                   <p>
@@ -78,10 +85,7 @@ const Form = () => {
   };
 
   return (
-    <div
-      data-theme="retro"
-      className="p-6 h-[500px] rounded-xl flex-col justify-between gap-5"
-    >
+    <div className="p-6 h-[500px] rounded-xl flex-col justify-between gap-5">
       {renderCalculator()}
     </div>
   );

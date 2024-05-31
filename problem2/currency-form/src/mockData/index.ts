@@ -180,3 +180,16 @@ export const data = [
     price: 0.01651813559322034,
   },
 ];
+
+export const themes = [
+  "light",
+  "dark",
+  "bumblebee",
+  "retro",
+  "cyberpunk",
+  "valentine",
+  "halloween",
+  "garden",
+  "forest",
+  "aqua",
+];
