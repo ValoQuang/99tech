@@ -6,6 +6,9 @@ import Dropdown from "../Buttons/Dropdown";
 import SwitchButton from "../Buttons/Switch";
 import Input from "../Buttons/Input";
 import { LuArrowLeftRight } from "react-icons/lu";
+import { useEffect } from "react";
+import { calculateExchangeRate } from "../../utils/calculateExchangeRate";
+import Loading from "../Loading/Loading";
 
 const Form = () => {
   const {
@@ -38,20 +41,18 @@ const Form = () => {
     return (
       <>
         {loading ? (
-          <div className="w-full flex items-center justify-center">
-            <span className="loading loading-ring loading-lg"></span>
-          </div>
+          <Loading />
         ) : (
-          <div className="flex animate-fadeIn flex-col gap-5 rounded-xl">
+          <div className="flex animate-fadeIn flex-col justify-between rounded-xl">
             <h1 className="items-center max-lg:text-xl text-2xl align-middle flex justify-center pt-10">
               Currency exchange calculator
             </h1>
-            <section className="flex w-full gap-5 max-lg:flex-col">
+            <div className="mt-5 flex h-24 w-full gap-5 max-lg:flex-col">
               <div className="w-1/3 max-lg:w-full">
                 <Input />
               </div>
 
-              <div className="gap-3 flex max-lg:w-full max-lg:px-0 w-2/3 justify-between">
+              <div className="gap-2 flex max-lg:w-full max-lg:px-0 w-2/3 justify-between">
                 <Dropdown
                   label="From"
                   selectedCurrency={fromCurrency?.currency as string}
@@ -72,22 +73,19 @@ const Form = () => {
                   onSelectCurrency={handleToCurrency}
                 />
               </div>
-            </section>
+            </div>
 
-            <section>
-              <div className="collapse bg-base-200">
-                <input type="radio" name="my-accordion-1" defaultChecked />
-                <div className="collapse-title text-xl font-medium">
+            <div className="bg-base-100 card-bordered shadow-md max-lg:mt-28">
+              <div className="card-body">
+                <div className="card-title text-xl font-medium">
                   Exchange rate
                 </div>
-                <div className="collapse-content">
-                  <p>
-                    1 {fromCurrency?.currency} is equal to{" "}
-                    {toCurrency?.currency}
-                  </p>
-                </div>
+                <p className="pt-10">
+                  1 {fromCurrency?.currency} is equal to {toCurrency?.currency}
+                </p>
+                <p>Exchange rate: {}</p>
               </div>
-            </section>
+            </div>
           </div>
         )}
       </>

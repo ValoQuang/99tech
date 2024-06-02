@@ -53,14 +53,14 @@ const Navbar = React.memo(() => {
   const renderSocialMediaButtons = () => {
     return (
       <>
-        {socialMediaLink.map(({ name, icon }) => (
-          <>
+        {socialMediaLink.map((value, index) => (
+          <div key={index}>
             <SwitchButton
-              key={name}
-              onSwap={() => handleNavigate(name)}
-              icon={icon}
+              key={value.name}
+              onSwap={() => handleNavigate(value.name)}
+              icon={value.icon}
             />
-          </>
+          </div>
         ))}
         <SwitchButton onSwap={handleChangeTheme} icon={<LuPaintBucket />} />
       </>
@@ -78,7 +78,7 @@ const Navbar = React.memo(() => {
         <div className="lg:hidden relative">
           <SwitchButton onSwap={handleDropdown} icon={<LuAlignJustify />} />
           {openDropdown && (
-            <div className="absolute animate-fadeIn right-0 mt-2 flex gap-[2px] flex-col shadow-lg z-50">
+            <div className="absolute animate-fadeIn right-0 mt-1 flex gap-[2px] flex-col shadow-lg z-50">
               {renderSocialMediaButtons()}
             </div>
           )}

@@ -23,7 +23,7 @@ const DropdownButton = React.memo(
           </div>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[9] menu p-2 shadow bg-base-100 rounded-xl w-52 overflow-scroll"
+            className="dropdown-content z-[9] menu p-2 shadow bg-base-100 rounded-xl w-72 max-lg:w-48 overflow-scroll"
           >
             <div className="h-64">
               {data.map((item: CurrencyPrice, index: number) => (
