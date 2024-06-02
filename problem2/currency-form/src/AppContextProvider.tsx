@@ -10,21 +10,26 @@ export interface CurrencyPrice {
 export type CurrencyPriceWithoutDate = Omit<CurrencyPrice, "date">;
 
 interface FormContextType {
+  amount: number;
   data: CurrencyPrice[];
-  setData: (data: CurrencyPrice[]) => void;
   error: boolean;
-  setError: (error: boolean) => void;
   loading: boolean;
-  setLoading: (loading: boolean) => void;
   fromCurrency: CurrencyPriceWithoutDate | null;
-  setFromCurrency: (currency: { currency: string; price: number } | null) => void;
   toCurrency: CurrencyPriceWithoutDate | null;
-  setToCurrency: (currency: { currency: string; price: number } | null) => void;
   theme: string;
+  setData: (data: CurrencyPrice[]) => void;
+  setError: (error: boolean) => void;
+  setLoading: (loading: boolean) => void;
+  setFromCurrency: (
+    currency: { currency: string; price: number } | null
+  ) => void;
+  setToCurrency: (currency: { currency: string; price: number } | null) => void;
+  setAmount: (amount: number) => void;
   setTheme: (theme: string) => void;
 }
 
 export const defaultValue: FormContextType = {
+  amount: 1,
   loading: false,
   error: false,
   data: [
@@ -35,31 +40,35 @@ export const defaultValue: FormContextType = {
     },
   ],
   fromCurrency: null,
-  setFromCurrency: () => {},
+  theme: themes[0],
   toCurrency: null,
+  setFromCurrency: () => {},
   setToCurrency: () => {},
   setData: () => {},
   setError: () => {},
   setLoading: () => {},
-  theme: themes[0],
+  setAmount: () => {},
   setTheme: () => {},
 };
 
-const TokenFormProvider = createContext<FormContextType>(defaultValue);
+const ContextForm = createContext<FormContextType>(defaultValue);
 
-export const useFormContext = () => useContext(TokenFormProvider);
+export const useFormContext = () => useContext(ContextForm);
 
 export const FormProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState(defaultValue.data);
-  const [error, setError] = useState(defaultValue.error);
-  const [loading, setLoading] = useState(defaultValue.loading);
-  const [fromCurrency, setFromCurrency] = useState(defaultValue.fromCurrency);
-  const [toCurrency, setToCurrency] = useState(defaultValue.toCurrency);
-  const [theme, setTheme] = useState(themes[0]);
+  const [data, setData] = useState<CurrencyPrice[]>(defaultValue.data);
+  const [error, setError] = useState<boolean>(defaultValue.error);
+  const [loading, setLoading] = useState<boolean>(defaultValue.loading);
+  const [fromCurrency, setFromCurrency] = useState<CurrencyPriceWithoutDate | null>(defaultValue.fromCurrency);
+  const [toCurrency, setToCurrency] = useState<CurrencyPriceWithoutDate | null>(defaultValue.toCurrency);
+  const [theme, setTheme] = useState<string>(themes[0]);
+  const [amount, setAmount] = useState<number>(defaultValue.amount);
 
   return (
-    <TokenFormProvider.Provider
+    <ContextForm.Provider
       value={{
+        amount,
+        setAmount,
         theme,
         setTheme,
         fromCurrency,
@@ -75,6 +84,6 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </TokenFormProvider.Provider>
+    </ContextForm.Provider>
   );
 };

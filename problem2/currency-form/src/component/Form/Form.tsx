@@ -12,6 +12,7 @@ import Loading from "../Loading/Loading";
 
 const Form: React.FC = () => {
   const {
+    amount,
     data,
     loading,
     fromCurrency,
@@ -52,7 +53,7 @@ const Form: React.FC = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="p-5 card-bordered flex animate-fadeIn flex-col gap-5 justify-between rounded-xl">
+        <div className="p-5 card-bordered flex animate-fadeIn flex-col gap-2 max-lg:gap-5 justify-between rounded-xl">
           <h1 className="items-center max-lg:text-xl text-2xl align-middle flex justify-center">
             Currency exchange calculator
           </h1>
@@ -85,7 +86,7 @@ const Form: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex gap-2 items-center flex-row-reverse max-lg:w-full max-lg:justify-around">
+          <div className="flex gap-2 items-center flex-row-reverse max-lg:w-full max-lg:mt-14 max-lg:justify-between">
             <SwitchButton
               onSwap={handleConvertCurrency}
               header="Convert"
