@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import {
   LuFacebook,
   LuPaintBucket,
@@ -29,43 +29,43 @@ const socialMediaLink = [
   },
 ];
 
-const Navbar: React.FC = React.memo(() => {
+const Navbar: React.FC = memo(() => {
   const { theme, setTheme } = useFormContext();
   const [openDropdown, setOpenDropdown] = useState(false);
 
-  const handleDropdown = () => {
+  const handleDropdown = useCallback(() => {
     setOpenDropdown((prev) => !prev);
-  };
+  }, []);
 
-  const handleChangeTheme = () => {
+  const handleChangeTheme = useCallback(() => {
     const currentThemeIndex = themes.indexOf(theme);
     const nextThemeIndex = (currentThemeIndex + 1) % themes.length;
     setTheme(themes[nextThemeIndex]);
-  };
+  }, [theme, setTheme]);
 
-  const handleNavigate = (address: string) => {
+  const handleNavigate = useCallback((address: string) => {
     const newTab = socialMediaLink.find((link) => link.name === address);
     if (newTab) {
       window.open(newTab.link, "_blank")?.focus();
     }
-  };
+  }, []);
 
-  const renderSocialMediaButtons = () => {
+  const renderSocialMediaButtons = useCallback(() => {
     return (
       <>
         {socialMediaLink.map((value, index) => (
           <div key={index}>
             <SwitchButton
               key={value.name}
-              onSwap={() => handleNavigate(value.name)}
+              onClick={() => handleNavigate(value.name)}
               icon={value.icon}
             />
           </div>
         ))}
-        <SwitchButton onSwap={handleChangeTheme} icon={<LuPaintBucket />} />
+        <SwitchButton onClick={handleChangeTheme} icon={<LuPaintBucket />} />
       </>
     );
-  };
+  }, [handleNavigate, handleChangeTheme]);
 
   return (
     <div data-theme={theme}>
@@ -76,7 +76,7 @@ const Navbar: React.FC = React.memo(() => {
         </section>
 
         <div className="lg:hidden relative">
-          <SwitchButton onSwap={handleDropdown} icon={<LuAlignJustify />} />
+          <SwitchButton onClick={handleDropdown} icon={<LuAlignJustify />} />
           {openDropdown && (
             <div className="absolute animate-fadeIn right-0 mt-1 flex gap-[2px] flex-col shadow-lg z-50">
               {renderSocialMediaButtons()}

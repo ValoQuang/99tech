@@ -5,26 +5,11 @@ import { data } from "./mockData";
 import { validateCurrencyData } from "./utils/validateData";
 import Navbar from "./component/Navbar/Navbar";
 import Footer from "./component/Footer/Footer";
+import Loading from "./component/Loading/Loading";
 
 function App() {
-  const { theme, setData, setError, setLoading } = useFormContext();
+  const { loading, theme, setData, setError, setLoading } = useFormContext();
   useEffect(() => {
-    //const fetchData = async () => {
-    //  try {
-    //    const response = await fetch(
-    //      "https://interview.switcheo.com/prices.json"
-    //    );
-    //    if (!response.ok) {
-    //      setError(...)
-    //    }
-    //    const data = await response.json();
-    //    setData(data);
-    //    setLoading(false);
-    //  } catch (error) {
-    //    setError(error.message);
-    //  }
-    //};
-
     //mock the api backend call with fetching tim around 1s to display loading spinner
     const fetchData = async () => {
       try {
@@ -33,7 +18,7 @@ function App() {
           const validatedData = validateCurrencyData(data);
           setData(validatedData);
           setLoading(false);
-        }, 1000);
+        }, 500);
         return () => {
           clearTimeout(responseTimeout);
         };
@@ -43,7 +28,7 @@ function App() {
       }
     };
     fetchData();
-  }, [setData, setError, setLoading]);
+  }, [setData, setError]);
 
   return (
     <div
@@ -52,9 +37,11 @@ function App() {
     >
       <div className="items-center align-middle pt-1">
         <Navbar />
-        <Form />
+        {loading ? <Loading /> : <Form />}
       </div>
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

@@ -1,28 +1,44 @@
-import React, { ChangeEvent } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "../../AppContextProvider";
 
 const InputButton: React.FC = () => {
-  const { amount, setAmount } = useFormContext();
+  const { setError, setLoading, handleUpdateForm } = useFormContext();
+  const [inputValue, setInputValue] = useState("1");
 
   const handleEnterAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setAmount(parseFloat(event.target.value));
+    setInputValue(event.target.value);
   };
+
+  useEffect(() => {
+    const parsedValue = parseInt(inputValue);
+    if (isNaN(parsedValue)) {
+      setError(true);
+    } else {
+      setError(false);
+      const debounceInputAmount = setTimeout(
+        () => handleUpdateForm("amount", parsedValue),
+        300
+      );
+      return () => {
+        clearTimeout(debounceInputAmount);
+      };
+    }
+  }, [inputValue, handleUpdateForm, setLoading]);
 
   return (
     <div className="flex flex-col w-full">
       <span>Amount</span>
       <input
-        type="number"
+        type="text"
         placeholder="Enter your amount"
-        min={0}
-        max={10000}
         className="input input-bordered rounded-xl"
-        value={amount}
+        value={inputValue}
         onChange={(e) => handleEnterAmount(e)}
       />
-      {Number.isNaN(amount) ? (
-        <span className="text-red-500 text-xs">Please enter a valid number</span>
+      {isNaN(parseInt(inputValue)) ? (
+        <span className="text-red-500 text-xs mt-1">
+          Please enter a valid number
+        </span>
       ) : null}
     </div>
   );

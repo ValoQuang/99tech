@@ -1,9 +1,17 @@
 import { CurrencyPriceWithoutDate } from "../AppContextProvider";
 
-export const calculateExchangeRate = (prop: {amount: number, from: CurrencyPriceWithoutDate, to: CurrencyPriceWithoutDate}) => {
-    const {amount, from, to} = prop;
-    const exchange_rate =  from.price / to.price;
-    const exchanged_amount = amount *  exchange_rate;
-
-    return [exchanged_amount, exchange_rate];
+interface ExchangeRateProps {
+  amount: number;
+  from: CurrencyPriceWithoutDate;
+  to: CurrencyPriceWithoutDate;
 }
+
+export const calculateExchangeRate = ({
+  amount,
+  from,
+  to,
+}: ExchangeRateProps): number[] => {
+  const exchange_rate = from.price / to.price;
+  const exchanged_amount = amount * (from.price / to.price);
+  return [exchanged_amount, exchange_rate];
+};

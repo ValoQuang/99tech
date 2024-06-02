@@ -1,15 +1,14 @@
-import React from "react";
+import { memo } from "react";
 import { CurrencyPrice } from "../../AppContextProvider";
 
 interface DropdownButton {
   label: string;
   selectedCurrency: string;
-  onSelectCurrency: (currency: {currency: string, price: number}) => void;
-  data: CurrencyPrice[];
+  onSelectCurrency: (currency: { currency: string; price: number }) => void;
+  data: CurrencyPrice[] | null;
 }
 
-const DropdownButton = React.memo(
-  ({ label, selectedCurrency, data, onSelectCurrency }: DropdownButton) => {
+const DropdownButton = memo(({ label, selectedCurrency, data, onSelectCurrency }: DropdownButton) => {
     return (
       <div className="w-full">
         <span>{label}</span>
@@ -22,11 +21,16 @@ const DropdownButton = React.memo(
             className="dropdown-content z-[9] menu p-2 shadow bg-base-100 rounded-xl w-72 max-lg:w-48 overflow-scroll"
           >
             <div className="h-64">
-              {data.map((item: CurrencyPrice, index: number) => (
+              {data?.map((item: CurrencyPrice, index: number) => (
                 <li
                   className="hover:bg-base-200 cursor-pointer"
                   key={index}
-                  onClick={() => onSelectCurrency({currency: item.currency, price: item.price})}
+                  onClick={() =>
+                    onSelectCurrency({
+                      currency: item.currency,
+                      price: item.price,
+                    })
+                  }
                 >
                   {item.currency}
                 </li>

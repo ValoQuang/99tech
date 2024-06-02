@@ -1,53 +1,64 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { themes } from "./mockData";
 
-export interface CurrencyPrice {
+export type CurrencyPrice = {
   currency: string;
   date: string;
   price: number;
-}
+};
 
-export type CurrencyPriceWithoutDate = Omit<CurrencyPrice, "date">;
+export type ExChangeRate = {
+  exchange_rate: number;
+  base_rate: number;
+};
 
-interface FormContextType {
-  amount: number;
-  data: CurrencyPrice[];
-  error: boolean;
-  loading: boolean;
+export type FormInput = {
+  amount: number | null;
   fromCurrency: CurrencyPriceWithoutDate | null;
   toCurrency: CurrencyPriceWithoutDate | null;
+};
+
+type FormInputKey = keyof FormInput;
+
+type FormInputValue = FormInput[FormInputKey];
+
+export type CurrencyPriceWithoutDate = Omit<CurrencyPrice, "date">;
+interface FormContextType {
+  data: CurrencyPrice[] | null;
+  formInput: FormInput;
+  error: boolean;
+  loading: boolean;
   theme: string;
+  rate: ExChangeRate | null;
+  setRate: (amount: { exchange_rate: number; base_rate: number }) => void;
   setData: (data: CurrencyPrice[]) => void;
   setError: (error: boolean) => void;
   setLoading: (loading: boolean) => void;
-  setFromCurrency: (
-    currency: { currency: string; price: number } | null
-  ) => void;
-  setToCurrency: (currency: { currency: string; price: number } | null) => void;
-  setAmount: (amount: number) => void;
+  handleUpdateForm: (key: FormInputKey, value: FormInputValue) => void;
+  handleRefreshForm: () => void;
+  handleSwapInputForm: () => void;
   setTheme: (theme: string) => void;
 }
 
 export const defaultValue: FormContextType = {
-  amount: 1,
   loading: false,
   error: false,
-  data: [
+  data: null,
+  formInput:
     {
-      currency: "",
-      date: "",
-      price: 0,
-    },
-  ],
-  fromCurrency: null,
+      amount: 1,
+      fromCurrency: null,
+      toCurrency: null,
+    } || null,
   theme: themes[0],
-  toCurrency: null,
-  setFromCurrency: () => {},
-  setToCurrency: () => {},
+  rate: null,
+  setRate: () => {},
+  handleUpdateForm: () => {},
+  handleRefreshForm: () => {},
+  handleSwapInputForm: () => {},
   setData: () => {},
   setError: () => {},
   setLoading: () => {},
-  setAmount: () => {},
   setTheme: () => {},
 };
 
@@ -56,25 +67,46 @@ const ContextForm = createContext<FormContextType>(defaultValue);
 export const useFormContext = () => useContext(ContextForm);
 
 export const FormProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<CurrencyPrice[]>(defaultValue.data);
+  const [data, setData] = useState<CurrencyPrice[] | null>(defaultValue.data);
   const [error, setError] = useState<boolean>(defaultValue.error);
   const [loading, setLoading] = useState<boolean>(defaultValue.loading);
-  const [fromCurrency, setFromCurrency] = useState<CurrencyPriceWithoutDate | null>(defaultValue.fromCurrency);
-  const [toCurrency, setToCurrency] = useState<CurrencyPriceWithoutDate | null>(defaultValue.toCurrency);
   const [theme, setTheme] = useState<string>(themes[0]);
-  const [amount, setAmount] = useState<number>(defaultValue.amount);
+  const [rate, setRate] = useState<ExChangeRate | null>(defaultValue.rate);
+  const [formInput, setFormInput] = useState<FormInput>(defaultValue.formInput);
+
+  const handleUpdateForm = (key: FormInputKey, value: FormInputValue) => {
+    setFormInput((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleRefreshForm = () => {
+    if (formInput.toCurrency?.currency && formInput.fromCurrency?.currency === null) return;
+    setFormInput(defaultValue.formInput);
+    setRate(null);
+  };
+
+  const handleSwapInputForm = () => {
+    if (formInput.toCurrency?.currency === formInput.fromCurrency?.currency) return;
+    setFormInput((prev) => ({
+      ...prev,
+      fromCurrency: formInput.toCurrency,
+      toCurrency: formInput.fromCurrency,
+    }));
+  };
 
   return (
     <ContextForm.Provider
       value={{
-        amount,
-        setAmount,
+        rate,
+        setRate,
+        formInput,
+        handleRefreshForm,
+        handleUpdateForm,
+        handleSwapInputForm,
         theme,
         setTheme,
-        fromCurrency,
-        setFromCurrency,
-        toCurrency,
-        setToCurrency,
         data,
         setData,
         error,
