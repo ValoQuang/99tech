@@ -23,7 +23,7 @@ const InputButton: React.FC = () => {
         clearTimeout(debounceInputAmount);
       };
     }
-  }, [inputValue, handleUpdateForm, setLoading]);
+  }, [inputValue, handleUpdateForm, setError, setLoading]);
 
   return (
     <div className="flex flex-col w-full">

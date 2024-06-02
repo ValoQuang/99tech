@@ -5,6 +5,7 @@ export type CurrencyPrice = {
   currency: string;
   date: string;
   price: number;
+  icon: string;
 };
 
 export type ExChangeRate = {
@@ -35,9 +36,9 @@ interface FormContextType {
   setError: (error: boolean) => void;
   setLoading: (loading: boolean) => void;
   handleUpdateForm: (key: FormInputKey, value: FormInputValue) => void;
-  handleRefreshForm: () => void;
+  handleResetForm: () => void;
   handleSwapInputForm: () => void;
-  setTheme: (theme: string) => void;
+  handleChangeTheme: () => void;
 }
 
 export const defaultValue: FormContextType = {
@@ -54,12 +55,12 @@ export const defaultValue: FormContextType = {
   rate: null,
   setRate: () => {},
   handleUpdateForm: () => {},
-  handleRefreshForm: () => {},
+  handleResetForm: () => {},
   handleSwapInputForm: () => {},
   setData: () => {},
   setError: () => {},
   setLoading: () => {},
-  setTheme: () => {},
+  handleChangeTheme: () => {},
 };
 
 const ContextForm = createContext<FormContextType>(defaultValue);
@@ -81,14 +82,19 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  const handleRefreshForm = () => {
-    if (formInput.toCurrency?.currency && formInput.fromCurrency?.currency === null) return;
+  const handleResetForm = () => {
+    if (
+      formInput.toCurrency?.currency &&
+      formInput.fromCurrency?.currency === null
+    )
+      return;
     setFormInput(defaultValue.formInput);
     setRate(null);
   };
 
   const handleSwapInputForm = () => {
-    if (formInput.toCurrency?.currency === formInput.fromCurrency?.currency) return;
+    if (formInput.toCurrency?.currency === formInput.fromCurrency?.currency)
+      return;
     setFormInput((prev) => ({
       ...prev,
       fromCurrency: formInput.toCurrency,
@@ -96,22 +102,28 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  const handleChangeTheme = () => {
+    const currentThemeIndex = themes.indexOf(theme);
+    const nextThemeIndex = (currentThemeIndex + 1) % themes.length;
+    setTheme(themes[nextThemeIndex]);
+  };
+
   return (
     <ContextForm.Provider
       value={{
         rate,
-        setRate,
         formInput,
-        handleRefreshForm,
+        theme,
+        data,
+        error,
+        loading,
+        setRate,
+        handleResetForm,
         handleUpdateForm,
         handleSwapInputForm,
-        theme,
-        setTheme,
-        data,
+        handleChangeTheme,
         setData,
-        error,
         setError,
-        loading,
         setLoading,
       }}
     >

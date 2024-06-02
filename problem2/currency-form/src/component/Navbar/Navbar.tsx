@@ -8,7 +8,6 @@ import {
 } from "react-icons/lu";
 import SwitchButton from "../Buttons/Switch";
 import { useFormContext } from "../../AppContextProvider";
-import { themes } from "../../mockData";
 import React from "react";
 
 const socialMediaLink = [
@@ -30,18 +29,12 @@ const socialMediaLink = [
 ];
 
 const Navbar: React.FC = memo(() => {
-  const { theme, setTheme } = useFormContext();
+  const { theme, handleChangeTheme } = useFormContext();
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const handleDropdown = useCallback(() => {
     setOpenDropdown((prev) => !prev);
   }, []);
-
-  const handleChangeTheme = useCallback(() => {
-    const currentThemeIndex = themes.indexOf(theme);
-    const nextThemeIndex = (currentThemeIndex + 1) % themes.length;
-    setTheme(themes[nextThemeIndex]);
-  }, [theme, setTheme]);
 
   const handleNavigate = useCallback((address: string) => {
     const newTab = socialMediaLink.find((link) => link.name === address);
@@ -68,22 +61,20 @@ const Navbar: React.FC = memo(() => {
   }, [handleNavigate, handleChangeTheme]);
 
   return (
-    <div data-theme={theme}>
-      <nav className="w-full h-10 flex gap-1 px-6 justify-between">
-        <h1 className="text-4xl">Expensive form</h1>
-        <section className="flex gap-1 max-lg:hidden">
-          {renderSocialMediaButtons()}
-        </section>
+    <div data-theme={theme} className="w-full flex gap-1 px-6 justify-between">
+      <h1 className="text-4xl">Expensive form</h1>
+      <section className="flex gap-1 max-lg:hidden">
+        {renderSocialMediaButtons()}
+      </section>
 
-        <div className="lg:hidden relative">
-          <SwitchButton onClick={handleDropdown} icon={<LuAlignJustify />} />
-          {openDropdown && (
-            <div className="absolute animate-fadeIn right-0 mt-1 flex gap-[2px] flex-col shadow-lg z-50">
-              {renderSocialMediaButtons()}
-            </div>
-          )}
-        </div>
-      </nav>
+      <div className="lg:hidden relative">
+        <SwitchButton onClick={handleDropdown} icon={<LuAlignJustify />} />
+        {openDropdown && (
+          <div className="absolute animate-fadeIn right-0 mt-1 flex gap-[2px] flex-col shadow-lg z-50">
+            {renderSocialMediaButtons()}
+          </div>
+        )}
+      </div>
     </div>
   );
 });

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import Form from "./component/Form/Form";
 import { useFormContext } from "./AppContextProvider";
 import { data } from "./mockData";
-import { validateCurrencyData } from "./utils/validateData";
 import Navbar from "./component/Navbar/Navbar";
 import Footer from "./component/Footer/Footer";
 import Loading from "./component/Loading/Loading";
@@ -10,24 +9,15 @@ import Loading from "./component/Loading/Loading";
 function App() {
   const { loading, theme, setData, setError, setLoading } = useFormContext();
   useEffect(() => {
-    //mock the api backend call with fetching tim around 1s to display loading spinner
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const responseTimeout = setTimeout(() => {
-          const validatedData = validateCurrencyData(data);
-          setData(validatedData);
-          setLoading(false);
-        }, 500);
-        return () => {
-          clearTimeout(responseTimeout);
-        };
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-      }
+    //mock the api call with fetching time to display loading spinner
+    setLoading(true);
+    const responseTimeout = setTimeout(() => {
+      setData(data);
+      setLoading(false);
+    }, 500);
+    return () => {
+      clearTimeout(responseTimeout);
     };
-    fetchData();
   }, [setData, setError]);
 
   return (
