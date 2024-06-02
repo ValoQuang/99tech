@@ -17,9 +17,9 @@ interface FormContextType {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   fromCurrency: CurrencyPriceWithoutDate | null;
-  setFromCurrency: (currency: { currency: string; price: number }) => void;
+  setFromCurrency: (currency: { currency: string; price: number } | null) => void;
   toCurrency: CurrencyPriceWithoutDate | null;
-  setToCurrency: (currency: { currency: string; price: number }) => void;
+  setToCurrency: (currency: { currency: string; price: number } | null) => void;
   theme: string;
   setTheme: (theme: string) => void;
 }

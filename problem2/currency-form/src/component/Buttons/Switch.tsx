@@ -2,16 +2,17 @@ import React, { ReactNode } from "react";
 
 interface SwitchButton {
   onSwap: () => void;
-  header?: string;
+  span?: string;
   icon: ReactNode;
+  header?: string | null;
 }
 
-const SwitchButton = React.memo(({ onSwap, header, icon }: SwitchButton) => {
+const SwitchButton = React.memo(({ onSwap, span, icon, header }: SwitchButton) => {
   return (
     <div className="flex flex-col items-center">
-      <span>{header}</span>
+      <span>{span}</span>
       <button className="btn rounded-xl" onClick={onSwap}>
-        {icon}
+        {header ? <>{icon} {header}</> : <>{icon}</> }
       </button>
     </div>
   );

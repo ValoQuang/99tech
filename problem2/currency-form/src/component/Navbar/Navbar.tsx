@@ -29,7 +29,7 @@ const socialMediaLink = [
   },
 ];
 
-const Navbar = React.memo(() => {
+const Navbar: React.FC = React.memo(() => {
   const { theme, setTheme } = useFormContext();
   const [openDropdown, setOpenDropdown] = useState(false);
 

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
-const InputButton = React.memo(() => {
+const InputButton: React.FC = () => {
   return (
     <div className="flex flex-col w-full">
       <span>Amount</span>
@@ -13,6 +13,6 @@ const InputButton = React.memo(() => {
       />
     </div>
   );
-});
+};
 
 export default InputButton;

@@ -15,11 +15,7 @@ const DropdownButton = React.memo(
         <span>{label}</span>
         <div className="dropdown w-full">
           <div tabIndex={0} role="button" className="btn w-full rounded-xl">
-            {selectedCurrency !== null ? (
-              selectedCurrency
-            ) : (
-              <p className="max-lg:text-xs">Choose currency</p>
-            )}
+            {selectedCurrency}
           </div>
           <ul
             tabIndex={0}
