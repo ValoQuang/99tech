@@ -3,7 +3,6 @@ import { themes } from "./mockData";
 
 export type CurrencyPrice = {
   currency: string;
-  date: string;
   price: number;
   icon: string;
 };
@@ -15,26 +14,23 @@ export type ExChangeRate = {
 
 export type FormInput = {
   amount: number | null;
-  fromCurrency: CurrencyPriceWithoutDate | null;
-  toCurrency: CurrencyPriceWithoutDate | null;
+  fromCurrency: CurrencyPrice | null;
+  toCurrency: CurrencyPrice | null;
 };
 
 type FormInputKey = keyof FormInput;
 
 type FormInputValue = FormInput[FormInputKey];
 
-export type CurrencyPriceWithoutDate = Omit<CurrencyPrice, "date">;
 interface FormContextType {
   data: CurrencyPrice[] | null;
   formInput: FormInput;
   error: boolean;
-  loading: boolean;
   theme: string;
   rate: ExChangeRate | null;
   setRate: (amount: { exchange_rate: number; base_rate: number }) => void;
   setData: (data: CurrencyPrice[]) => void;
   setError: (error: boolean) => void;
-  setLoading: (loading: boolean) => void;
   handleUpdateForm: (key: FormInputKey, value: FormInputValue) => void;
   handleResetForm: () => void;
   handleSwapInputForm: () => void;
@@ -42,7 +38,6 @@ interface FormContextType {
 }
 
 export const defaultValue: FormContextType = {
-  loading: false,
   error: false,
   data: null,
   formInput:
@@ -59,7 +54,6 @@ export const defaultValue: FormContextType = {
   handleSwapInputForm: () => {},
   setData: () => {},
   setError: () => {},
-  setLoading: () => {},
   handleChangeTheme: () => {},
 };
 
@@ -70,7 +64,6 @@ export const useFormContext = () => useContext(ContextForm);
 export const FormProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<CurrencyPrice[] | null>(defaultValue.data);
   const [error, setError] = useState<boolean>(defaultValue.error);
-  const [loading, setLoading] = useState<boolean>(defaultValue.loading);
   const [theme, setTheme] = useState<string>(themes[0]);
   const [rate, setRate] = useState<ExChangeRate | null>(defaultValue.rate);
   const [formInput, setFormInput] = useState<FormInput>(defaultValue.formInput);
@@ -116,7 +109,6 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
         theme,
         data,
         error,
-        loading,
         setRate,
         handleResetForm,
         handleUpdateForm,
@@ -124,7 +116,6 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
         handleChangeTheme,
         setData,
         setError,
-        setLoading,
       }}
     >
       {children}

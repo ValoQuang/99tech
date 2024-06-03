@@ -111,7 +111,7 @@ const Form: React.FC = () => {
             rate && (
               <div className="flex flex-col gap-5">
                 <div className="text-xl">Exchange rate</div>
-                <span className="text-3xl font-medium flex gap-2 items-center">
+                <span className="text-3xl flex-wrap max-lg:text-xl font-medium flex gap-2 items-center">
                   <img
                     className="w-12 h-12"
                     src={formInput.fromCurrency?.icon}
@@ -119,16 +119,19 @@ const Form: React.FC = () => {
                   />
                   <p>
                     {formInput.amount} {formInput.fromCurrency?.currency} ={" "}
-                    {rate?.exchange_rate.toFixed(5)}{" "}
+                    
                   </p>
-                  <img
-                    className="w-12 h-12"
-                    src={formInput.toCurrency?.icon}
-                    alt="i"
-                  />
-                  {formInput.toCurrency?.currency}
+                  <span className="flex gap-1 items-center">
+                    <img
+                      className="w-12 h-12"
+                      src={formInput.toCurrency?.icon}
+                      alt="i"
+                    />
+                    {rate?.exchange_rate.toFixed(5)}{" "}
+                    <p>{formInput.toCurrency?.currency}</p>
+                  </span>
                 </span>
-                <p>
+                <p className="max-lg:text-xs">
                   1 {formInput.fromCurrency?.currency} ={" "}
                   {rate?.base_rate.toFixed(5)} {formInput.toCurrency?.currency}
                 </p>

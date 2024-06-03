@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormContext } from "../../AppContextProvider";
 
 const InputButton: React.FC = () => {
-  const { setError, setLoading, handleUpdateForm } = useFormContext();
+  const { setError, handleUpdateForm } = useFormContext();
   const [inputValue, setInputValue] = useState("1");
 
   const handleEnterAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +23,7 @@ const InputButton: React.FC = () => {
         clearTimeout(debounceInputAmount);
       };
     }
-  }, [inputValue, handleUpdateForm, setError, setLoading]);
+  }, [inputValue, handleUpdateForm, setError]);
 
   return (
     <div className="flex flex-col w-full">

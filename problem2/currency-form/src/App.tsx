@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Form from "./component/Form/Form";
 import { useFormContext } from "./AppContextProvider";
 import { data } from "./mockData";
@@ -7,7 +7,8 @@ import Footer from "./component/Footer/Footer";
 import Loading from "./component/Loading/Loading";
 
 function App() {
-  const { loading, theme, setData, setError, setLoading } = useFormContext();
+  const { theme, setData, setError } = useFormContext();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     //mock the api call with fetching time to display loading spinner
     setLoading(true);

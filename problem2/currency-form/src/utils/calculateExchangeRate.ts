@@ -1,9 +1,9 @@
-import { CurrencyPriceWithoutDate } from "../AppContextProvider";
+import { CurrencyPrice } from "../AppContextProvider";
 
 interface ExchangeRateProps {
   amount: number;
-  from: CurrencyPriceWithoutDate;
-  to: CurrencyPriceWithoutDate;
+  from: CurrencyPrice;
+  to: CurrencyPrice;
 }
 
 export const calculateExchangeRate = ({

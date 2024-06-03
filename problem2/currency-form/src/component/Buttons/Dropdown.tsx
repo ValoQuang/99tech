@@ -1,13 +1,10 @@
 import { memo } from "react";
-import {
-  CurrencyPrice,
-  CurrencyPriceWithoutDate,
-} from "../../AppContextProvider";
+import { CurrencyPrice } from "../../AppContextProvider";
 
 interface DropdownButton {
   label: string;
-  selectedCurrency: CurrencyPriceWithoutDate | null;
-  onSelectCurrency: (currency: CurrencyPriceWithoutDate) => void;
+  selectedCurrency: CurrencyPrice | null;
+  onSelectCurrency: (currency: CurrencyPrice) => void;
   data: CurrencyPrice[] | null;
 }
 
@@ -27,7 +24,9 @@ const DropdownButton: React.FC<DropdownButton> = memo(
                 <img className="w-6 h-6" src={selectedCurrency.icon} alt="i" />
                 <p>{selectedCurrency.currency}</p>
               </>
-            ) : "Choose currency"}
+            ) : (
+              "Choose currency"
+            )}
           </div>
           <ul
             tabIndex={0}
