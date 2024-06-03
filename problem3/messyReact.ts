@@ -1,81 +1,84 @@
+enum BC {
+  OSM = "Osmosis",
+  ETH = "Ethereum",
+  ARB = "Arbitrum",
+  ZIL = "Zilliqa",
+  NEO = "NEO",
+}
+
+type Blockchain = BC.OSM | BC.ETH | BC.ARB | BC.ZIL | BC.NEO;
 interface WalletBalance {
-    currency: string;
-    amount: number;
-  }
-  interface FormattedWalletBalance {
-    currency: string;
-    amount: number;
-    formatted: string;
-  }
-  
-  interface Props extends BoxProps {
-  
-  }
-  const WalletPage: React.FC<Props> = (props: Props) => {
-    const { children, ...rest } = props;
-    const balances = useWalletBalances();
-    const prices = usePrices();
-  
-      const getPriority = (blockchain: any): number => {
-        switch (blockchain) {
-          case 'Osmosis':
-            return 100
-          case 'Ethereum':
-            return 50
-          case 'Arbitrum':
-            return 30
-          case 'Zilliqa':
-            return 20
-          case 'Neo':
-            return 20
-          default:
-            return -99
-        }
+  currency: string;
+  amount: number;
+  blockchain: Blockchain;
+}
+interface FormattedWalletBalance extends WalletBalance {
+  formatted: string;
+}
+
+interface Props extends BoxProps {}
+const WalletPage: FC<Props> = (props: Props) => {
+  const { children, ...rest } = props;
+  const balances = useWalletBalances();
+  const prices = usePrices();
+
+  const getPriority = (blockchain: Blockchain): number => {
+    switch (blockchain) {
+      case BC.OSM:
+        return 100;
+      case BC.ETH:
+        return 50;
+      case BC.ARB:
+        return 30;
+      case BC.ZIL:
+        return 20;
+      case BC.NEO:
+        return 20;
+      default:
+        return -99;
+    }
+  };
+  //-------------------------------------------------------
+  const sortedAndFormattedBalances = useMemo(() => {
+    const balancePriorityThreshold = -99;
+
+    const filteredBalances = balances.filter((balance: WalletBalance) => {
+      const balancePriority = getPriority(balance.blockchain);
+      return balancePriority > balancePriorityThreshold &&
+        balance.amount <= 0;
+    });
+    const sortedBalances = filteredBalances.sort(
+      (lhs: WalletBalance, rhs: WalletBalance) => {
+        const leftPriority = getPriority(lhs.blockchain);
+        const rightPriority = getPriority(rhs.blockchain);
+        if (leftPriority > rightPriority) return -1;
+        if (leftPriority < rightPriority) return 1;
+        return 0;
       }
-  
-    const sortedBalances = useMemo(() => {
-      return balances.filter((balance: WalletBalance) => {
-            const balancePriority = getPriority(balance.blockchain);
-            if (lhsPriority > -99) {
-               if (balance.amount <= 0) {
-                 return true;
-               }
-            }
-            return false
-          }).sort((lhs: WalletBalance, rhs: WalletBalance) => {
-              const leftPriority = getPriority(lhs.blockchain);
-            const rightPriority = getPriority(rhs.blockchain);
-            if (leftPriority > rightPriority) {
-              return -1;
-            } else if (rightPriority > leftPriority) {
-              return 1;
-            }
-      });
-    }, [balances, prices]);
-  
-    const formattedBalances = sortedBalances.map((balance: WalletBalance) => {
-      return {
-        ...balance,
-        formatted: balance.amount.toFixed()
-      }
-    })
-  
-    const rows = sortedBalances.map((balance: FormattedWalletBalance, index: number) => {
+    );
+    const formattedBalances = sortedBalances.map((balance: WalletBalance) => ({
+      ...balance,
+      formatted: balance.amount.toFixed(2),
+    }))
+
+    return formattedBalances;
+  }, [balances]);
+  //-------------------------------------------------------
+
+  const rows = sortedAndFormattedBalances.map(
+    (balance: FormattedWalletBalance, index: number) => {
       const usdValue = prices[balance.currency] * balance.amount;
       return (
-        <WalletRow 
+        <WalletRow
           className={classes.row}
           key={index}
           amount={balance.amount}
           usdValue={usdValue}
           formattedAmount={balance.formatted}
         />
-      )
-    })
-  
-    return (
-      <div {...rest}>
-        {rows}
-      </div>
-    )
-  }
+      );
+    }
+  );
+
+  return <div {...rest}>{rows}</div>;
+};

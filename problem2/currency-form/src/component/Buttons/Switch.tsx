@@ -7,7 +7,7 @@ interface SwitchButton {
   header?: string | null;
 }
 
-const SwitchButton = memo(({ onClick, span, icon, header }: SwitchButton) => {
+const SwitchButton: React.FC<SwitchButton> = memo(({ onClick, span, icon, header }: SwitchButton) => {
   return (
     <div className="flex flex-col items-center">
       <span>{span}</span>

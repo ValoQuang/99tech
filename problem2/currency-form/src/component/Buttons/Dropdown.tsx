@@ -11,7 +11,7 @@ interface DropdownButton {
   data: CurrencyPrice[] | null;
 }
 
-const DropdownButton = memo(
+const DropdownButton: React.FC<DropdownButton> = memo(
   ({ label, selectedCurrency, data, onSelectCurrency }: DropdownButton) => {
     return (
       <div className="w-full">
