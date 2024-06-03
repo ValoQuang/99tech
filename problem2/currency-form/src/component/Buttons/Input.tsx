@@ -21,7 +21,7 @@ const InputButton: React.FC = () => {
       setError(false);
       const debounceInputAmount = setTimeout(
         () => handleUpdateForm("amount", parsedValue),
-        300
+        500
       );
       return () => {
         clearTimeout(debounceInputAmount);

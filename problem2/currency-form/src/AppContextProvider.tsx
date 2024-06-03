@@ -69,6 +69,7 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
   const [formInput, setFormInput] = useState<FormInput>(defaultValue.formInput);
 
   const handleUpdateForm = (key: FormInputKey, value: FormInputValue) => {
+    if (error) return;
     setFormInput((prev) => ({
       ...prev,
       [key]: value,
