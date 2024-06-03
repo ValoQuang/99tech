@@ -29,7 +29,7 @@ const InputButton: React.FC = () => {
     } else {
       setError(true);
     }
-  }, [inputValue, handleUpdateForm, setError]);
+  }, [inputValue, setError]);
 
   return (
     <div className="flex flex-col w-full">

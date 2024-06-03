@@ -41,9 +41,8 @@ const Form: React.FC = () => {
     }, 300);
     return () => clearTimeout(mockAPIresponse);
   }, [
-    formInput.amount,
-    formInput?.fromCurrency,
-    formInput?.toCurrency,
+    error,
+    formInput,
     setRate,
     setError,
   ]);
@@ -54,10 +53,7 @@ const Form: React.FC = () => {
     }
   }, [
     fetchExchangeRate,
-    formInput?.amount,
-    formInput?.toCurrency,
-    formInput?.fromCurrency,
-    data,
+    formInput
   ]);
 
   return (
