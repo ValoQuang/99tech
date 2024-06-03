@@ -26,7 +26,6 @@ const Form: React.FC = () => {
     setLoad(true);
     const mockAPIresponse = setTimeout(() => {
       if (verifyInput(formInput)) {
-        
         const [exchange_rate, base_rate] = calculateExchangeRate({
           amount: formInput.amount as number,
           from: formInput?.fromCurrency as CurrencyPrice,

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "../../AppContextProvider";
+import { verifyInput } from "../../utils/verifyInput";
 
 const InputButton: React.FC = () => {
-  const { setError, handleUpdateForm } = useFormContext();
+  const { formInput, error, setError, handleUpdateForm } = useFormContext();
   const [inputValue, setInputValue] = useState("1");
 
   const handleEnterAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -11,9 +12,12 @@ const InputButton: React.FC = () => {
 
   useEffect(() => {
     const parsedValue = parseInt(inputValue);
-    if (isNaN(parsedValue)) {
-      setError(true);
-    } else {
+    if (
+      verifyInput({
+        ...formInput,
+        amount: parsedValue,
+      })
+    ) {
       setError(false);
       const debounceInputAmount = setTimeout(
         () => handleUpdateForm("amount", parsedValue),
@@ -22,6 +26,8 @@ const InputButton: React.FC = () => {
       return () => {
         clearTimeout(debounceInputAmount);
       };
+    } else {
+      setError(true);
     }
   }, [inputValue, handleUpdateForm, setError]);
 
@@ -35,7 +41,7 @@ const InputButton: React.FC = () => {
         value={inputValue}
         onChange={(e) => handleEnterAmount(e)}
       />
-      {isNaN(parseInt(inputValue)) ? (
+      {error ? (
         <span className="text-red-500 text-xs mt-1">
           Please enter a valid number
         </span>

@@ -88,6 +88,7 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
   const handleSwapInputForm = () => {
     if (formInput.toCurrency?.currency === formInput.fromCurrency?.currency)
       return;
+    if (error) return;
     setFormInput((prev) => ({
       ...prev,
       fromCurrency: formInput.toCurrency,
