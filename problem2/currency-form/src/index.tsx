@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { FormProvider } from "./AppContextProvider";
 
 const root = ReactDOM.createRoot(
@@ -13,4 +12,3 @@ root.render(
   </FormProvider>
 );
 
-reportWebVitals();
