@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useFormContext } from "../../AppContextProvider";
+import { CurrencyPrice, useFormContext } from "../../AppContextProvider";
 import { LuArrowLeftRight, LuUndo2 } from "react-icons/lu";
 import { calculateExchangeRate } from "../../utils/calculateExchangeRate";
 import Loading from "../Loading/Loading";
 import Dropdown from "../Buttons/Dropdown";
 import SwitchButton from "../Buttons/Switch";
 import Input from "../Buttons/Input";
+import { verifyInput } from "../../utils/verifyInput";
 
 const Form: React.FC = () => {
   const {
@@ -24,15 +25,12 @@ const Form: React.FC = () => {
   const fetchExchangeRate = useCallback(() => {
     setLoad(true);
     const mockAPIresponse = setTimeout(() => {
-      if (
-        formInput.amount &&
-        formInput?.fromCurrency &&
-        formInput?.toCurrency
-      ) {
+      if (verifyInput(formInput)) {
+        
         const [exchange_rate, base_rate] = calculateExchangeRate({
-          amount: formInput.amount,
-          from: formInput?.fromCurrency,
-          to: formInput?.toCurrency,
+          amount: formInput.amount as number,
+          from: formInput?.fromCurrency as CurrencyPrice,
+          to: formInput?.toCurrency as CurrencyPrice,
         });
         setRate({
           exchange_rate: exchange_rate,
@@ -119,7 +117,6 @@ const Form: React.FC = () => {
                   />
                   <p>
                     {formInput.amount} {formInput.fromCurrency?.currency} ={" "}
-                    
                   </p>
                   <span className="flex gap-1 items-center">
                     <img
