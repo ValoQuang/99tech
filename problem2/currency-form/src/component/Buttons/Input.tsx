@@ -32,7 +32,7 @@ const InputButton: React.FC = () => {
   }, [inputValue, setError]);
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col h-20 w-full">
       <span>Amount</span>
       <input
         type="text"
