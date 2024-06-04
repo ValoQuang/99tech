@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Form from "./component/Form/Form";
 import { useFormContext } from "./AppContextProvider";
 import { data } from "./mockData";
@@ -9,8 +9,8 @@ import Loading from "./component/Loading/Loading";
 function App() {
   const { theme, setData, setError } = useFormContext();
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    //mock the api call with fetching time to display loading spinner
+
+  const fetchExchangeData = useCallback(() => {
     setLoading(true);
     const responseTimeout = setTimeout(() => {
       setData(data);
@@ -19,7 +19,11 @@ function App() {
     return () => {
       clearTimeout(responseTimeout);
     };
-  }, [setData, setError]);
+  }, [setData]);
+
+  useEffect(() => {
+    fetchExchangeData();
+  }, []);
 
   return (
     <div

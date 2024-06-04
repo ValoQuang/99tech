@@ -9,24 +9,14 @@ import Input from "../Buttons/Input";
 import { verifyInput } from "../../utils/verifyInput";
 
 const Form: React.FC = () => {
-  const {
-    formInput,
-    rate,
-    data,
-    error,
-    handleSwapInputForm,
-    handleUpdateForm,
-    handleResetForm,
-    setRate,
-    setError,
-  } = useFormContext();
+  const { formInput, rate, data, error, handleSwapInputForm, handleUpdateForm, handleResetForm, setRate, setError } = useFormContext();
   const [load, setLoad] = useState(false);
 
   const fetchExchangeRate = useCallback(() => {
     setLoad(true);
     const mockAPIresponse = setTimeout(() => {
       if (verifyInput(formInput)) {
-        const [exchange_rate, base_rate] = calculateExchangeRate({
+          const [exchange_rate, base_rate] = calculateExchangeRate({
           amount: formInput.amount as number,
           from: formInput?.fromCurrency as CurrencyPrice,
           to: formInput?.toCurrency as CurrencyPrice,

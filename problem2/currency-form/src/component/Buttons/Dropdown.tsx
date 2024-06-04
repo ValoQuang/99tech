@@ -9,14 +9,7 @@ interface DropdownButton {
   error: boolean;
 }
 
-const DropdownButton: React.FC<DropdownButton> = memo(
-  ({
-    label,
-    selectedCurrency,
-    data,
-    onSelectCurrency,
-    error,
-  }: DropdownButton) => {
+const DropdownButton: React.FC<DropdownButton> = memo(({ label, selectedCurrency, data, onSelectCurrency, error }: DropdownButton) => {
     return (
       <div className="w-full">
         <span>{label}</span>
