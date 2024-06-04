@@ -6,15 +6,23 @@ interface DropdownButton {
   selectedCurrency: CurrencyPrice | null;
   onSelectCurrency: (currency: CurrencyPrice) => void;
   data: CurrencyPrice[] | null;
+  error: boolean;
 }
 
 const DropdownButton: React.FC<DropdownButton> = memo(
-  ({ label, selectedCurrency, data, onSelectCurrency }: DropdownButton) => {
+  ({
+    label,
+    selectedCurrency,
+    data,
+    onSelectCurrency,
+    error,
+  }: DropdownButton) => {
     return (
       <div className="w-full">
         <span>{label}</span>
         <div className="dropdown w-full">
-          <div
+          <button
+            disabled={error}
             tabIndex={0}
             role="button"
             className="btn w-full flex gap-1 rounded-xl"
@@ -27,7 +35,7 @@ const DropdownButton: React.FC<DropdownButton> = memo(
             ) : (
               "Choose currency"
             )}
-          </div>
+          </button>
           <ul
             tabIndex={0}
             className="dropdown-content z-[9] menu p-2 shadow bg-base-100 rounded-xl w-72 max-lg:w-48 overflow-scroll"

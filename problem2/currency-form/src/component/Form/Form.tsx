@@ -40,21 +40,13 @@ const Form: React.FC = () => {
       }
     }, 300);
     return () => clearTimeout(mockAPIresponse);
-  }, [
-    error,
-    formInput,
-    setRate,
-    setError,
-  ]);
+  }, [error, formInput, setRate, setError]);
 
   useEffect(() => {
     if (formInput?.toCurrency && formInput?.fromCurrency && !error) {
       fetchExchangeRate();
     }
-  }, [
-    fetchExchangeRate,
-    formInput
-  ]);
+  }, [fetchExchangeRate, formInput]);
 
   return (
     <div className="p-6 h-[500px] rounded-xl flex-col justify-between gap-5">
@@ -69,6 +61,7 @@ const Form: React.FC = () => {
           <div className="gap-2 flex max-lg:w-full max-lg:px-0 w-2/3 justify-between">
             <Dropdown
               label="From"
+              error={error}
               selectedCurrency={formInput?.fromCurrency}
               data={data}
               onSelectCurrency={(currency) =>
@@ -76,11 +69,13 @@ const Form: React.FC = () => {
               }
             />
             <SwitchButton
+              error={error}
               onClick={handleSwapInputForm}
               span="Swap"
               icon={<LuArrowLeftRight />}
             />
             <Dropdown
+              error={error}
               label="To"
               selectedCurrency={formInput?.toCurrency}
               data={data}
@@ -92,6 +87,7 @@ const Form: React.FC = () => {
         </div>
         <div className="flex gap-2 items-center flex-row-reverse max-lg:w-full max-lg:mt-16 max-lg:justify-between">
           <SwitchButton
+            error={error}
             onClick={handleResetForm}
             header="Reset"
             icon={<LuUndo2 />}
